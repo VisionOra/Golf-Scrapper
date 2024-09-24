@@ -1,0 +1,6 @@
+venv/
+*.json
+*.xlsx
+.idea/
+__pycache__/
+.DS_Store
