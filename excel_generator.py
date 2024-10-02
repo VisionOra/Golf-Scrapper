@@ -3,6 +3,8 @@ import os
 
 import pandas as pd
 
+from get_detailed_member import call_api_for_address
+
 root_json_dir = "facility_type/"  # Change directory for which excel file is creating.
 filter_file_name = ["filtered_fields_facility_type.json", "filtered_fields_member_type.json",
                     "filtered_fields_facility_type.json"
@@ -67,6 +69,10 @@ def generate_filtered_data_file(json_files_list):
                 "email": item.get("email"),
                 "phone": item.get("phone"),
                 "mobile": item.get("mobile"),
+                "address1": item.get("address1"),
+                "address2": item.get("address2"),
+                "address3": item.get("address3"),
+                "address4": item.get("address4")
             }
         )
     print("DUMPING DATA IN JSON FILE")
@@ -90,6 +96,13 @@ if __name__ == '__main__':
     #     print(json_files_list)
     #     generate_filtered_data_file(json_files_list)
     # print("FILE FOUND")
-    # data = load_json_file(filter_file_name)
+    # data = load_json_file(filter_file_name[2])
     # create_excel_from_payload(data, filter_excel_name[2])  # Change excel file name accordingly
-    merge_excel_files()
+    # merge_excel_files()
+    try:
+        # Read the Excel file into a pandas DataFrame
+        df = pd.read_excel("merged_excel.xlsx")
+        filtered_df = df[df['object_type'] == "member"]
+        call_api_for_address(filtered_df)
+    except Exception as e:
+        print(f"Error reading Excel file: {e}")
